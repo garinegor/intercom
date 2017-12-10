@@ -18,5 +18,3 @@ def compare(name,path):
 		if new_face in result['groups'][0]:
 			to_r=True
 	return to_r
-
-print(compare('george','./images/image4.jpg'))
