@@ -1,30 +1,27 @@
-from time import sleep
-import config,telebot,json,os,pygame
-from telebot import types
-import RPi.GPIO as GPIO
 from picamera import PiCamera
+import RPi.GPIO as GPIO
+from time import sleep
+import os,funcs
 
-bot = telebot.TeleBot(config.token)
-users=[202226598, 56345999]
 GPIO.setmode(GPIO.BCM)
 GPIO.setup(21, GPIO.IN, pull_up_down=GPIO.PUD_UP)
 camera = PiCamera()
 camera.vflip = True
 camera.hflip = True
-pygame.init()
-my_sound = pygame.mixer.Sound('./foo.wav')
 
 while True:
     input_state = GPIO.input(21)
     if input_state == False:
-        my_sound.play()
-        bot.send_message(202226598, "кто-то пришел")
         camera.start_preview()
+        print("getting photo")
         sleep(2)
-        camera.capture('./image.jpg')
         camera.stop_preview()
-        bot.send_photo(chat_id=202226598, photo=open('./image.jpg', 'rb'))
+        if 'came(new)' in os.listdir():
+            camera.capture('./came(new)/image.jpg')
+        else:
+            camera.capture('./came/image.jpg')
+            os.rename('came','came(new)')
+        if funcs.compare('george','./came(new)/image.jpg'):
+            os.rename('./came(new)/image.jpg','./came(new)/george.jpg')
+        print('folder has been renamed')
         sleep(0.2)
-
-if __name__ == '__main__':
-    bot.polling(none_stop=True)
