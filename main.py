@@ -16,12 +16,12 @@ while True:
         print("getting photo")
         sleep(2)
         camera.stop_preview()
-        if 'came(new)' in os.listdir():
-            camera.capture('./came(new)/image.jpg')
+        if 'came_new' in os.listdir():
+            camera.capture('./came_new/image.jpg')
         else:
             camera.capture('./came/image.jpg')
-            os.rename('came','came(new)')
-        if funcs.compare('george','./came(new)/image.jpg'):
-            os.rename('./came(new)/image.jpg','./came(new)/george.jpg')
+            os.rename('came','came_new')
+        if funcs.compare('george','./came_new/image.jpg'):
+            os.rename('./came_new/image.jpg','./came_new/george.jpg')
         print('folder has been renamed')
         sleep(0.2)
